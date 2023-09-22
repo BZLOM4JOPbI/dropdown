@@ -3,15 +3,23 @@ import style from './App.module.sass'
 
 
 function App() {
-    console.log(style)
     return (
-        <>
+        <div className={style.wrap}>
             <DropdownMenu>
-                <div className={style.red}>
-                    dropdown element
-                </div>
+                <ul className={style.list}>
+                    <li className={style.list__element}>Element 1</li>
+                    <li className={style.list__element}>Element 2</li>
+                    <li className={style.list__element}>Element 3</li>
+                </ul>
             </DropdownMenu>
-        </>
+            <DropdownMenu>
+                <ul className={style.list}>
+                    <li className={style.list__element}>Element 1</li>
+                    <li className={style.list__element}>Element 2</li>
+                    <li className={style.list__element}>Element 3</li>
+                </ul>
+            </DropdownMenu>
+        </div>
   )
 }
 

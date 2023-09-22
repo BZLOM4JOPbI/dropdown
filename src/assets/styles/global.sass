@@ -1,3 +1,24 @@
+
+@font-face
+    font-family: 'Ubuntu'
+    src: url('../fonts/Ubuntu-Regular.woff2')
+    font-weight: 400
+    font-style: normal
+    display: swap
+@font-face
+    font-family: 'Ubuntu'
+    src: url('../fonts/Ubuntu-Medium.woff2')
+    font-weight: 500
+    font-style: normal
+    display: swap
+@font-face
+    font-family: 'Ubuntu'
+    src: url('../fonts/Ubuntu-Bold.woff2')
+    font-weight: 700
+    font-style: normal
+    display: swap
+
+
 *, *::after, *::before
     box-sizing: border-box
 
@@ -49,6 +70,7 @@ html
 body
     min-height: 100%
     font-weight: 400
+    font-family: 'Ubuntu'
     // color: $font-color-base
     // font-size: $font-size-s
 
@@ -61,8 +83,10 @@ body
   
 
 #root 
+    padding: 25px
     min-height: 100vh
     overflow: clip
     display: flex
     flex-direction: column
     position: relative
+    background-color: #ebebeb
