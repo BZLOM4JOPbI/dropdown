@@ -1,10 +1,11 @@
 import { useState } from "react"
 
 
-export default function Dropdown() {
+export default function DropdownMenu({ children, } : { children: React.ReactNode }) {
     const [isOpen, setIsOpen] = useState(false);
 
-    const handleClickTrigger = () => {
+    const handleClickTrigger = (e: React.MouseEvent) => {
+        console.log(e.target)
         setIsOpen(!isOpen)
     }
     return (
@@ -14,7 +15,7 @@ export default function Dropdown() {
             >
                 Dropdown
             </div>
-            { isOpen && <div>Is open</div> }
+            { isOpen && <div>{ children }</div> }
         </div>
     )
 }
