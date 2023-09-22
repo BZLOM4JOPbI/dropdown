@@ -2,12 +2,11 @@ import { useEffect, useRef } from "react"
 
 
 const useOutsideClick = (callback: CallableFunction) => {
-    const ref = useRef()
+    const ref = useRef() as React.MutableRefObject<HTMLDivElement>
 
     useEffect(() => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const handleClick = (e: MouseEvent) => {
-            callback()
+            callback(e)
         }
 
         document.addEventListener('click', handleClick)
