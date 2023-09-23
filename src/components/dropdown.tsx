@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import style from './dropdown.module.sass'
 import useOutsideClick from "../hooks/outside_click";
+import useIsOverflow from "../hooks/is_overflow";
 
 
 export default function DropdownMenu({ children, } : { children: React.ReactNode }) {
@@ -19,10 +20,6 @@ export default function DropdownMenu({ children, } : { children: React.ReactNode
 
 
     const handleClickTrigger = async () => { 
-        // const activeDropdown = document.querySelector('.dropdown_open')
-        // if (!activeDropdown) {
-        //     e.stopPropagation()
-        // }
         if (isOpen) {
             setIsOpen(false)
         } else {
@@ -32,26 +29,54 @@ export default function DropdownMenu({ children, } : { children: React.ReactNode
         }
     }
 
-    const dropdownTrigger = useRef() as React.MutableRefObject<HTMLButtonElement>
-    const dropdownBody = useRef() as React.MutableRefObject<HTMLDivElement>
+    const handleScroll = (isOverflow: boolean) => {
+        setBodyOverflow(isOverflow)
+        if (isOverflow) {
+            checkDirection()
+        }
+    }
 
+    const dropdownTrigger = useRef() as React.MutableRefObject<HTMLButtonElement>
+    const dropdownBody = useIsOverflow(handleScroll)
+
+
+    const [bodyOverflow, setBodyOverflow] = useState<boolean>();
     const [isTop, setIsTop] = useState<boolean>();
     const [isLeft, setIsLeft] = useState<boolean>();
 
+    const checkDirection = () => {
+        const bodyRect = dropdownBody.current.getBoundingClientRect()
+        const triggerRect = dropdownTrigger.current.getBoundingClientRect()
+
+        // setIsTop(triggerRect.top > bodyRect.height)
+        // setIsLeft(triggerRect.left > bodyRect.width)
+
+        if (triggerRect.top > (window.innerHeight - triggerRect.bottom) && triggerRect.top > bodyRect.height) {
+            // console.log('top')
+            setIsTop(true)
+        } else if (triggerRect.top < (window.innerHeight - triggerRect.bottom) && window.innerHeight - triggerRect.bottom > bodyRect.height) {
+            // console.log('bottom')
+            setIsTop(false)
+        } else {
+            setIsOpen(false)
+        }
+
+        if (triggerRect.left > (window.innerWidth - triggerRect.right) && triggerRect.left > bodyRect.width) {
+            setIsLeft(true)
+        } else if (triggerRect.left < (window.innerWidth - triggerRect.right) && (window.innerWidth - triggerRect.right) > bodyRect.width) {
+            setIsLeft(false)
+        } else {
+            setIsOpen(false)
+        }
+    }
+
+
     useEffect(() => {
         if (isOpen) {
-
-            const bodyRect = dropdownBody.current.getBoundingClientRect()
-            const triggerRect = dropdownTrigger.current.getBoundingClientRect()
-
-            setIsTop(triggerRect.top > bodyRect.height)
-            setIsLeft(triggerRect.left > bodyRect.width)
+            handleScroll(false)
+            checkDirection()
         }
     }, [isOpen])
-
-    // const handleClickBody = (e: React.MouseEvent) => {
-        // e.stopPropagation()
-    // }
 
 
     return (
@@ -78,8 +103,8 @@ export default function DropdownMenu({ children, } : { children: React.ReactNode
                             ${style.dropdown__body} 
                             ${isTop ? style.dropdown__body_top : style.dropdown__body_bottom}
                             ${isLeft ? style.dropdown__body_left : style.dropdown__body_right}
+                            ${bodyOverflow  && style.dropdown__body_hidden}
                         `}
-                        // onClick={handleClickBody}
                         ref={dropdownBody}
                     >
                         { children }
