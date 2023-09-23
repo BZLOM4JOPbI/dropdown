@@ -14,13 +14,16 @@ export default function DropdownMenu({ children, } : { children: React.ReactNode
     }
     const ref = useOutsideClick(handleClickOutside)
 
-    const handleClickTrigger = (e: React.MouseEvent) => { 
+    const handleClickTrigger = async (e: React.MouseEvent) => { 
         const activeDropdown = document.querySelector('.dropdown_open')
         if (!activeDropdown) {
             e.stopPropagation()
         }
-        setIsOpen(true)
-
+        if (!isOpen) {
+            setTimeout(() => {
+                setIsOpen(true)
+            })
+        }
     }
     return (
         <>
@@ -28,7 +31,7 @@ export default function DropdownMenu({ children, } : { children: React.ReactNode
                 className={`${style.dropdown} ${isOpen ? 'dropdown_open' : 'dropdown'}`} 
                 ref={ref}
             >
-                <div
+                <button
                     className={style.dropdown__trigger}
                     onClick={handleClickTrigger}
                 >
@@ -38,7 +41,7 @@ export default function DropdownMenu({ children, } : { children: React.ReactNode
                     >
                         <path d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z"/>
                     </svg>
-                </div>
+                </button>
                 { isOpen && 
                     <div className={style.dropdown__body}>{ children }</div> 
                 }
