@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import style from './dropdown.module.sass'
 import useOutsideClick from "../hooks/outside_click";
 import useIsOverflow from "../hooks/is_overflow";
+import { DropdownStyle } from "../types/dropdown";
 
 
-export default function DropdownMenu({ children, } : { children: React.ReactNode }) {
+export default function DropdownMenu({ children, styleDropdown } : { children: React.ReactNode, styleDropdown: DropdownStyle }) {
     const [isOpen, setIsOpen] = useState(false);
 
     const handleClickOutside = (e: MouseEvent) => {
@@ -40,9 +41,9 @@ export default function DropdownMenu({ children, } : { children: React.ReactNode
     const dropdownBody = useIsOverflow(handleScroll)
 
 
-    const [bodyOverflow, setBodyOverflow] = useState<boolean>();
-    const [isTop, setIsTop] = useState<boolean>();
-    const [isLeft, setIsLeft] = useState<boolean>();
+    const [bodyOverflow, setBodyOverflow] = useState<boolean>()
+    const [isTop, setIsTop] = useState<boolean>()
+    const [isLeft, setIsLeft] = useState<boolean>() 
 
     const checkDirection = () => {
         const bodyRect = dropdownBody.current.getBoundingClientRect()
@@ -52,10 +53,8 @@ export default function DropdownMenu({ children, } : { children: React.ReactNode
         // setIsLeft(triggerRect.left > bodyRect.width)
 
         if (triggerRect.top > (window.innerHeight - triggerRect.bottom) && triggerRect.top > bodyRect.height) {
-            // console.log('top')
             setIsTop(true)
         } else if (triggerRect.top < (window.innerHeight - triggerRect.bottom) && window.innerHeight - triggerRect.bottom > bodyRect.height) {
-            // console.log('bottom')
             setIsTop(false)
         } else {
             setIsOpen(false)
@@ -70,7 +69,6 @@ export default function DropdownMenu({ children, } : { children: React.ReactNode
         }
     }
 
-
     useEffect(() => {
         if (isOpen) {
             handleScroll(false)
@@ -78,6 +76,10 @@ export default function DropdownMenu({ children, } : { children: React.ReactNode
         }
     }, [isOpen])
 
+    const handleHover = (e: React.MouseEvent) => {
+        if (isOpen) return
+        (e.target as HTMLButtonElement).click()
+    }
 
     return (
         <>
@@ -89,6 +91,8 @@ export default function DropdownMenu({ children, } : { children: React.ReactNode
                     className={style.dropdown__trigger}
                     onClick={handleClickTrigger}
                     ref={dropdownTrigger}
+                    onMouseEnter={handleHover}
+                    style={styleDropdown}
                 >
                     <svg 
                         xmlns="http://www.w3.org/2000/svg" 
