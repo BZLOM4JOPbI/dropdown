@@ -18,37 +18,37 @@ function App() {
             <div className={`${style.wrap__element} ${style['wrap__element_top-left']}`}>
                 <DropdownMenu styleDropdown={styleDropdownMenu}>
                     <ul className={style.list}>
-                        <li className={style.list__element}>Element 1</li>
-                        <li className={style.list__element}>Element 2</li>
-                        <li className={style.list__element}>Element 3</li>
+                        <li className={style.list__element}>Element 1<span>&#128513;</span></li>
+                        <li className={style.list__element}>Element 23 32 21<span>&#128513;</span></li>
+                        <li className={style.list__element}>Element 33213 3213 3213 12 3123<span>&#128513;</span></li>
                     </ul>
                 </DropdownMenu>
             </div>
             <div className={`${style.wrap__element} ${style['wrap__element_top-right']}`}>
                 <DropdownMenu styleDropdown={styleDropdownMenu}>
-                    <ul className={style.list}>
-                        <li className={style.list__element}>Element 1</li>
-                        <li className={style.list__element}>Element 2</li>
-                        <li className={style.list__element}>Element 3</li>
-                    </ul>
+                <ul className={style.list}>
+                    <li className={style.list__element}>Element 1<span>&#128513;</span></li>
+                    <li className={style.list__element}>Element 23 32 21<span>&#128513;</span></li>
+                    <li className={style.list__element}>Element 33213 3213 3213 12 3123<span>&#128513;</span></li>
+                </ul>
                 </DropdownMenu>
             </div>
             <div className={`${style.wrap__element} ${style['wrap__element_bottom-right']}`}>
                 <DropdownMenu styleDropdown={styleDropdownMenu}>
-                    <ul className={style.list}>
-                        <li className={style.list__element}>Element 1</li>
-                        <li className={style.list__element}>Element 2</li>
-                        <li className={style.list__element}>Element 3</li>
-                    </ul>
+                <ul className={style.list}>
+                    <li className={style.list__element}>Element 1<span>&#128513;</span></li>
+                    <li className={style.list__element}>Element 23 32 21<span>&#128513;</span></li>
+                    <li className={style.list__element}>Element 33213 3213 3213 12 3123<span>&#128513;</span></li>
+                </ul>
                 </DropdownMenu>
             </div>
             <div className={`${style.wrap__element} ${style['wrap__element_bottom-left']}`}>
                 <DropdownMenu styleDropdown={styleDropdownMenu}>
-                    <ul className={style.list}>
-                        <li className={style.list__element}>Element 1</li>
-                        <li className={style.list__element}>Element 2</li>
-                        <li className={style.list__element}>Element 3</li>
-                    </ul>
+                <ul className={style.list}>
+                    <li className={style.list__element}>Element 1<span>&#128513;</span></li>
+                    <li className={style.list__element}>Element 23 32 21<span>&#128513;</span></li>
+                    <li className={style.list__element}>Element 33213 3213 3213 12 3123<span>&#128513;</span></li>
+                </ul>
                 </DropdownMenu>
             </div>
         </div>
