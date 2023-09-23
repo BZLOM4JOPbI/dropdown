@@ -1,4 +1,5 @@
 import { useLayoutEffect, useRef, } from "react"
+import throttle from "../utils/throttle"
 
 
 const useIsOverflow = (callback: CallableFunction) => {
@@ -14,14 +15,12 @@ const useIsOverflow = (callback: CallableFunction) => {
             }
         }
 
-        const handleScroll = () => {
-            checkOverflow()
-        }
+        const debouncedHandle = throttle(checkOverflow, 50)
 
-        document.addEventListener('scroll', handleScroll, { passive: true })
+        document.addEventListener('scroll', debouncedHandle, { passive: true })
 
         return(() => {
-            document.removeEventListener('scroll', handleScroll)
+            document.removeEventListener('scroll', debouncedHandle)
         })
 
     }, [ref, callback])
