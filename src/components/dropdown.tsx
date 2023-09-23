@@ -6,20 +6,26 @@ import useOutsideClick from "../hooks/outside_click";
 export default function DropdownMenu({ children, } : { children: React.ReactNode }) {
     const [isOpen, setIsOpen] = useState(false);
 
-    const handleClickOutside = () => {
+    const handleClickOutside = (e: MouseEvent) => {
         if (!ref.current) return
+        if (!e.target) return
         if ((ref.current as HTMLElement).classList.contains('dropdown_open')) {
-            setIsOpen(false)
+            if (!(e.target as HTMLElement).closest('.dropdown_open')) {
+                setIsOpen(false)
+            }
         }
     }
     const ref = useOutsideClick(handleClickOutside)
 
-    const handleClickTrigger = async (e: React.MouseEvent) => { 
-        const activeDropdown = document.querySelector('.dropdown_open')
-        if (!activeDropdown) {
-            e.stopPropagation()
-        }
-        if (!isOpen) {
+
+    const handleClickTrigger = async () => { 
+        // const activeDropdown = document.querySelector('.dropdown_open')
+        // if (!activeDropdown) {
+        //     e.stopPropagation()
+        // }
+        if (isOpen) {
+            setIsOpen(false)
+        } else {
             setTimeout(() => {
                 setIsOpen(true)
             })
@@ -34,24 +40,18 @@ export default function DropdownMenu({ children, } : { children: React.ReactNode
 
     useEffect(() => {
         if (isOpen) {
-            if (!dropdownTrigger.current) return
-            if (!dropdownBody.current) return
 
             const bodyRect = dropdownBody.current.getBoundingClientRect()
-            const triggerRect = (dropdownTrigger.current as HTMLButtonElement).getBoundingClientRect()
-
-            // const width = window.innerWidth
-            // const height = window.innerHeight
+            const triggerRect = dropdownTrigger.current.getBoundingClientRect()
 
             setIsTop(triggerRect.top > bodyRect.height)
-            console.log(triggerRect.top > bodyRect.height)
             setIsLeft(triggerRect.left > bodyRect.width)
         }
     }, [isOpen])
 
-    const handleClickBody = (e: React.MouseEvent) => {
-        e.stopPropagation()
-    }
+    // const handleClickBody = (e: React.MouseEvent) => {
+        // e.stopPropagation()
+    // }
 
 
     return (
@@ -79,7 +79,7 @@ export default function DropdownMenu({ children, } : { children: React.ReactNode
                             ${isTop ? style.dropdown__body_top : style.dropdown__body_bottom}
                             ${isLeft ? style.dropdown__body_left : style.dropdown__body_right}
                         `}
-                        onClick={handleClickBody}
+                        // onClick={handleClickBody}
                         ref={dropdownBody}
                     >
                         { children }
