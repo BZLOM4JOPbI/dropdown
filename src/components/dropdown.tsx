@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import style from './dropdown.module.sass'
 import useOutsideClick from "../hooks/outside_click";
 
@@ -25,6 +25,35 @@ export default function DropdownMenu({ children, } : { children: React.ReactNode
             })
         }
     }
+
+    const dropdownTrigger = useRef() as React.MutableRefObject<HTMLButtonElement>
+    const dropdownBody = useRef() as React.MutableRefObject<HTMLDivElement>
+
+    const [isTop, setIsTop] = useState<boolean>();
+    const [isLeft, setIsLeft] = useState<boolean>();
+
+    useEffect(() => {
+        if (isOpen) {
+            if (!dropdownTrigger.current) return
+            if (!dropdownBody.current) return
+
+            const bodyRect = dropdownBody.current.getBoundingClientRect()
+            const triggerRect = (dropdownTrigger.current as HTMLButtonElement).getBoundingClientRect()
+
+            // const width = window.innerWidth
+            // const height = window.innerHeight
+
+            setIsTop(triggerRect.top > bodyRect.height)
+            console.log(triggerRect.top > bodyRect.height)
+            setIsLeft(triggerRect.left > bodyRect.width)
+        }
+    }, [isOpen])
+
+    const handleClickBody = (e: React.MouseEvent) => {
+        e.stopPropagation()
+    }
+
+
     return (
         <>
             <div 
@@ -34,6 +63,7 @@ export default function DropdownMenu({ children, } : { children: React.ReactNode
                 <button
                     className={style.dropdown__trigger}
                     onClick={handleClickTrigger}
+                    ref={dropdownTrigger}
                 >
                     <svg 
                         xmlns="http://www.w3.org/2000/svg" 
@@ -43,7 +73,17 @@ export default function DropdownMenu({ children, } : { children: React.ReactNode
                     </svg>
                 </button>
                 { isOpen && 
-                    <div className={style.dropdown__body}>{ children }</div> 
+                    <div 
+                        className={`
+                            ${style.dropdown__body} 
+                            ${isTop ? style.dropdown__body_top : style.dropdown__body_bottom}
+                            ${isLeft ? style.dropdown__body_left : style.dropdown__body_right}
+                        `}
+                        onClick={handleClickBody}
+                        ref={dropdownBody}
+                    >
+                        { children }
+                    </div> 
                 }
             </div>
         </>
